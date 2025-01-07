@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package service;
+package notificationservice;
 
 option go_package = "./service";  // This defines the Go package path
 

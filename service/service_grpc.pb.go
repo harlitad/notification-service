@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	NotificationService_SendNotification_FullMethodName = "/service.NotificationService/SendNotification"
+	NotificationService_SendNotification_FullMethodName = "/notificationservice.NotificationService/SendNotification"
 )
 
 // NotificationServiceClient is the client API for NotificationService service.
@@ -108,7 +108,7 @@ func _NotificationService_SendNotification_Handler(srv interface{}, ctx context.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var NotificationService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "service.NotificationService",
+	ServiceName: "notificationservice.NotificationService",
 	HandlerType: (*NotificationServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

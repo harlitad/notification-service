@@ -20,12 +20,11 @@ func (s *server) SendNotification(ctx context.Context, req *NotificationRequest)
 
 	// mari menjahit
 	var factory NotificationFactory
-	switch req.GetTypeNotification() {
-	case "sms":
+	if req.GetTypeNotification() == "sms" {
 		factory = &SMSFactory{}
-	case "email":
+	} else if req.GetTypeNotification() == "email" {
 		factory = &EmailFactory{}
-	default:
+	} else {
 		return nil, fmt.Errorf("unknown notification type: %s", req.GetTypeNotification())
 	}
 
