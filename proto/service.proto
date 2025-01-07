@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package service;
+
+option go_package = "./service";  // This defines the Go package path
+
+service NotificationService {
+    rpc SendNotification (NotificationRequest) returns (NotificationResponse);
+}
+
+message NotificationRequest {
+    string typeNotification = 1; // "sms" or "email"
+    string emailAddress = 2;
+    string phoneNumber = 3;
+    string username = 4;
+}
+
+message NotificationResponse {
+    string message = 1;
+}
