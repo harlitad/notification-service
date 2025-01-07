@@ -2,7 +2,6 @@ package service
 
 import (
 	context "context"
-	"fmt"
 
 	grpc "google.golang.org/grpc"
 )
@@ -18,17 +17,9 @@ func (s *server) SendNotification(ctx context.Context, req *NotificationRequest)
 		EmailAddress: req.GetEmailAddress(),
 	}
 
-	// mari menjahit
-	var factory NotificationFactory
-	if req.GetTypeNotification() == "sms" {
-		factory = &SMSFactory{}
-	} else if req.GetTypeNotification() == "email" {
-		factory = &EmailFactory{}
-	} else {
-		return nil, fmt.Errorf("unknown notification type: %s", req.GetTypeNotification())
-	}
+	factory, _ := GetNotificationFactory(req.TypeNotification)
 
-	result := factory.CreateNotification().Send(*contactInfo)
+	result := factory.Send(*contactInfo)
 
 	return &NotificationResponse{
 		Message: result,

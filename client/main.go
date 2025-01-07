@@ -9,6 +9,7 @@ import (
 	"github.com/harlitad/notitication-service/service"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 func main() {
@@ -33,7 +34,7 @@ func main() {
 		log.Fatalf("--email is required for Email notifications.")
 	}
 
-	conn, err := grpc.Dial(*serverAddress, grpc.WithInsecure(), grpc.WithBlock())
+	conn, err := grpc.NewClient(*serverAddress, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("Failed to connect to gRPC server: %v", err)
 	}

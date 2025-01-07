@@ -7,18 +7,25 @@ import (
 	"github.com/harlitad/notitication-service/pkg/email"
 )
 
+type TypeNotification string
+
+const (
+	TypeNotificationEmail TypeNotification = "email"
+	TypeNotificationSMS   TypeNotification = "sms"
+)
+
 type ContactInfo struct {
 	Username     string
 	PhoneNumber  string
 	EmailAddress string
 }
 
-// create interface
-type Notification interface {
+// create interface factory
+type NotificationFactory interface {
 	Send(contact ContactInfo) string
 }
 
-// the products
+// products
 type SMSNotification struct{}
 
 func (s *SMSNotification) Send(contact ContactInfo) string {
@@ -40,20 +47,12 @@ func (s *EmailNotification) Send(contact ContactInfo) string {
 	return fmt.Sprintf("SMS sent to %s for %s", contact.EmailAddress, contact.Username)
 }
 
-// factory
-type NotificationFactory interface {
-	CreateNotification() Notification
-}
+func GetNotificationFactory(typeNotif string) (NotificationFactory, error) {
+	if typeNotif == string(TypeNotificationSMS) {
+		return &SMSNotification{}, nil
+	} else if typeNotif == string(TypeNotificationEmail) {
+		return &EmailNotification{}, nil
+	}
 
-// Concrete Factories
-type SMSFactory struct{}
-
-func (sf *SMSFactory) CreateNotification() Notification {
-	return &SMSNotification{}
-}
-
-type EmailFactory struct{}
-
-func (ef *EmailFactory) CreateNotification() Notification {
-	return &EmailNotification{}
+	return nil, fmt.Errorf("unknown notification type: %s", typeNotif)
 }
